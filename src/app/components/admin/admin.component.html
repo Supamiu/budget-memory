@@ -11,7 +11,7 @@
       <input type="text" name="wording" matInput [(ngModel)]="newTransaction.wording" placeholder="Libellé">
     </mat-form-field>
     <mat-form-field>
-      <input matInput [matDatepicker]="picker" placeholder="Date">
+      <input matInput [matDatepicker]="picker" placeholder="Date" [(ngModel)]="date">
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker [startAt]="date"></mat-datepicker>
     </mat-form-field>

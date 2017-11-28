@@ -30,7 +30,13 @@ export class TransactionsComponent {
         }));
       });
         return Observable.combineLatest(transactionsWithLabels$);
-    });
+      })
+      .map(transactions => {
+        transactions.sort((a, b) => {
+          return new Date(b.date).getTime() - new Date(a.date).getTime();
+        });
+        return transactions;
+      });
 
   constructor(public transactionService: TransactionService, private userService: UserService) {
   }

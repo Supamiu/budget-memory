@@ -13,9 +13,11 @@
 <div class="loader" *ngIf="(transactions$ | async) === null">
   <mat-spinner></mat-spinner>
 </div>
-<mat-selection-list #transactions>
+<mat-selection-list #transactions dense>
   <mat-list-option *ngFor="let transaction of transactions$ | async" [value]="transaction" checkboxPosition="before">
-    <div class="row-container">{{transaction.wording}} - {{transaction.amount}}€
+    <div class="row-container">
+      <p class="row-wording">{{transaction.wording}} - {{transaction.amount}}€</p>
+      <i>{{transaction.date | date}}</i>
       <div class="spacer"></div>
       <mat-chip-list>
         <mat-chip *ngFor="let label of transaction.labels" color="{{label.custom?'primary':'accent'}}" selected>

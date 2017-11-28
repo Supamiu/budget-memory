@@ -24,6 +24,7 @@ import { UserService } from './service/user.service';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AdminComponent } from './components/admin/admin.component';
 import { FormsModule } from '@angular/forms';
+import { ChartsModule } from 'ng2-charts';
 
 
 const routes: Routes = [
@@ -67,6 +68,8 @@ const routes: Routes = [
     MatDatepickerModule,
     MatNativeDateModule,
     MatSnackBarModule,
+
+    ChartsModule,
   ],
   declarations: [
     AppComponent,
