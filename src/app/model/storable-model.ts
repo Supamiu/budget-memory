@@ -1,3 +1,3 @@
-export interface StorableModel {
+export class StorableModel {
   id: string;
 }

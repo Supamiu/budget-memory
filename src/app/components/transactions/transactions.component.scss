@@ -1,3 +1,18 @@
+h2 {
+  color: white;
+}
+
+.menu {
+  display: flex;
+  mat-form-field {
+    flex: 1 1 auto;
+    margin-right: 20px;
+  }
+  button {
+    height: auto;
+  }
+}
+
 .row-container {
   display: flex;
   align-items: center;

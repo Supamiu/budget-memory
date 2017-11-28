@@ -4,6 +4,12 @@ import { Transaction } from '../../model/transaction';
 import { Observable } from 'rxjs/Observable';
 import { TransactionLabel } from '../../core/transaction-label';
 import { StandardTransactionLabels } from '../../core/standard-transaction-labels';
+import { UserService } from '../../service/user.service';
+import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/distinctUntilChanged';
+import 'rxjs/add/operator/do';
+import 'rxjs/add/observable/combineLatest';
+import { MatListOption, MatOption } from '@angular/material';
 
 @Component({
   selector: 'app-transactions',
@@ -12,24 +18,45 @@ import { StandardTransactionLabels } from '../../core/standard-transaction-label
 })
 export class TransactionsComponent {
 
-  public transactions$: Observable<Transaction[]> = this.transactionService.getAll()
-    .map(transactions => {
+  public transactions$: Observable<Transaction[]> =
+    this.transactionService.getAll()
+      .distinctUntilChanged()
+      .switchMap(transactions => {
+        const transactionsWithLabels$ = [];
       transactions.forEach(transaction => {
-        transaction.labels = this.getLabels(transaction).map(label => label.name);
+        transactionsWithLabels$.push(this.getLabels(transaction).map(labels => {
+          transaction.labels = labels;
+          return transaction;
+        }));
       });
-      return transactions;
+        return Observable.combineLatest(transactionsWithLabels$);
     });
 
-  constructor(public transactionService: TransactionService) {
+  constructor(public transactionService: TransactionService, private userService: UserService) {
   }
 
-  private getLabels(transaction: Transaction): TransactionLabel[] {
-    const labels = [];
-    StandardTransactionLabels.ALL.forEach(label => {
-      if (label.matches(transaction)) {
-        labels.push(label);
-      }
+  private getLabels(transaction: Transaction): Observable<TransactionLabel[]> {
+    return this.getAllLabels().map(possibleLabels => {
+      const labels = transaction.labels;
+      possibleLabels.forEach(label => {
+        if (label.matches(transaction) && labels.find(l => l.name === label.name) === undefined) {
+          labels.push(label);
+        }
+      });
+      return labels;
     });
-    return labels;
+  }
+
+  public getAllLabels(): Observable<TransactionLabel[]> {
+    return this.userService.getUser().map(user => {
+      return user.customLabels.concat(StandardTransactionLabels.ALL);
+    });
+  }
+
+  public addLabels(selectedTransations: MatListOption[], labels: MatOption[]): void {
+    selectedTransations.map(t => t.value).forEach(t => {
+      t.addLabels(...labels.map(opt => opt.value));
+      this.transactionService.saveTransaction(t);
+    });
   }
 }

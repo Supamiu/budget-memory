@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 import { AppComponent } from './app.component';
@@ -7,41 +8,76 @@ import { TransactionsComponent } from './components/transactions/transactions.co
 import { TransactionService } from './service/transaction.service';
 import { RouterModule, Routes } from '@angular/router';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
-import { MatChipsModule, MatListModule, MatToolbarModule } from '@angular/material';
+import {
+  MatButtonModule,
+  MatCardModule,
+  MatChipsModule, MatDatepickerModule, MatInputModule,
+  MatListModule, MatNativeDateModule,
+  MatProgressSpinnerModule,
+  MatSelectModule, MatSnackBarModule,
+  MatToolbarModule
+} from '@angular/material';
 import { AngularFireModule } from 'angularfire2';
 import { environment } from '../environments/environment';
+import { NgSerializerModule } from '@kaiu/ng-serializer';
+import { UserService } from './service/user.service';
+import { AngularFireAuthModule } from 'angularfire2/auth';
+import { AdminComponent } from './components/admin/admin.component';
+import { FormsModule } from '@angular/forms';
 
 
-const routes: Routes = [{
-  path: '',
-  pathMatch: 'full',
-  redirectTo: '/transactions'
-},
+const routes: Routes = [
+  {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: '/transactions'
+  },
   {
     path: 'transactions',
     component: TransactionsComponent
-  }];
+  },
+  {
+    path: 'admin',
+    component: AdminComponent
+  }
+];
 
 @NgModule({
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
+    FormsModule,
 
     RouterModule.forRoot(routes),
 
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
+    AngularFireAuthModule,
+
+    NgSerializerModule.forRoot(),
 
     MatListModule,
     MatToolbarModule,
     MatChipsModule,
+    MatProgressSpinnerModule,
+    MatSelectModule,
+    MatButtonModule,
+    MatCardModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatSnackBarModule,
   ],
   declarations: [
     AppComponent,
 
-    TransactionsComponent
+    TransactionsComponent,
+
+    AdminComponent
   ],
   providers: [
-    TransactionService
+    TransactionService,
+    UserService,
   ],
   bootstrap: [
     AppComponent
