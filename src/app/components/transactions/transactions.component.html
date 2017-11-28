@@ -1,0 +1,11 @@
+<h2>Transactions</h2>
+<mat-selection-list>
+  <mat-list-option *ngFor="let transaction of transactions$ | async" checkboxPosition="before">
+    <div class="row-container">{{transaction.wording}} - {{transaction.amount}}€
+      <div class="spacer"></div>
+      <mat-chip-list>
+        <mat-chip *ngFor="let label of transaction.labels" color="primary" selected>{{label}}</mat-chip>
+      </mat-chip-list>
+    </div>
+  </mat-list-option>
+</mat-selection-list>
