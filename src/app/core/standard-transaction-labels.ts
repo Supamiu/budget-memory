@@ -10,16 +10,16 @@ export class StandardTransactionLabels {
   public static readonly HOME = new TransactionLabel('Maison', ['Leroy Merlin', 'Conforama', 'Bricorama', 'Castorama', 'Brico Dépôt',
     'Bricomarché', 'Mr Bricolage', 'Bricoman', 'But', 'Mr Meuble', 'Fly', 'Ikea', 'Mobalpa', 'Cuisinella']);
 
-	public static readonly LEISURE = new TransactionLabel('Loisirs', ['Gaumont', 'Pathé','Decathlon', 'Intersport']);
+  public static readonly LEISURE = new TransactionLabel('Loisirs', ['Gaumont', 'Pathé', 'Decathlon', 'Intersport']);
 
-	public static readonly HIGHTECH = new TransactionLabel('Electronique', ['Darty', 'Materiel', 'ldlc', 'Boulanger', 'Grosbill']);
+  public static readonly HIGHTECH = new TransactionLabel('Electronique', ['Darty', 'Materiel', 'ldlc', 'Boulanger', 'Grosbill']);
 
-	public static readonly CLOTHING = new TransactionLabel('Mode', ['La Halle', 'Kiabi', 'Bonobo', 'Jules', 'H&M', 'Zara',
-	 'Orchestra', 'Celio', 'Gemo']);
+  public static readonly CLOTHING = new TransactionLabel('Mode', ['La Halle', 'Kiabi', 'Bonobo', 'Jules', 'H&M', 'Zara',
+    'Orchestra', 'Celio', 'Gemo']);
 
-	public static readonly TELECOMMUNICATION = new TransactionLabel('Télécommunication', ['Orange', 'SFR', 'Bouygues', 'free']);
+  public static readonly TELECOMMUNICATION = new TransactionLabel('Télécommunication', ['Orange', 'SFR', 'Bouygues', 'free']);
 
-	public static readonly TRANSPORT = new TransactionLabel('Transport', ['SNCF', 'Air France']);
+  public static readonly TRANSPORT = new TransactionLabel('Transport', ['SNCF', 'Air France']);
 
   public static readonly ALL: TransactionLabel[] = [
     StandardTransactionLabels.GROCERY,

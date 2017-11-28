@@ -24,7 +24,8 @@ import { UserService } from './service/user.service';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AdminComponent } from './components/admin/admin.component';
 import { FormsModule } from '@angular/forms';
-import { ChartsModule } from 'ng2-charts';
+import { BudgetComponent } from './components/budget/budget.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 
 const routes: Routes = [
@@ -36,6 +37,10 @@ const routes: Routes = [
   {
     path: 'transactions',
     component: TransactionsComponent
+  },
+  {
+    path: 'budget',
+    component: BudgetComponent
   },
   {
     path: 'admin',
@@ -69,14 +74,16 @@ const routes: Routes = [
     MatNativeDateModule,
     MatSnackBarModule,
 
-    ChartsModule,
+    NgxChartsModule,
   ],
   declarations: [
     AppComponent,
 
     TransactionsComponent,
 
-    AdminComponent
+    AdminComponent,
+
+    BudgetComponent
   ],
   providers: [
     TransactionService,
