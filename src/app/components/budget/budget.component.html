@@ -1,10 +1,32 @@
-<h2 class="mat-display-1">Budget</h2>
-<ngx-charts-pie-chart
-  [view]="[700, 400]"
-  [scheme]="colorScheme"
-  [results]="data | async"
-  [legend]="true"
-  [explodeSlices]="false"
-  [labels]="true"
-  [doughnut]="false">
-</ngx-charts-pie-chart>
+<h2 class="mat-display-2">Budget</h2>
+<h2 class="mat-display-1">Dépenses du mois : {{total}}€</h2>
+<mat-tab-group>
+  <mat-tab label="Répartition">
+    <ngx-charts-pie-chart
+      [view]="[700, 400]"
+      [scheme]="colorScheme"
+      [results]="data | async"
+      [legend]="true"
+      [explodeSlices]="false"
+      [labels]="true"
+      [doughnut]="false">
+    </ngx-charts-pie-chart>
+  </mat-tab>
+  <mat-tab label="Histogramme">
+    <div class="chart-container">
+      <ngx-charts-line-chart
+        [view]="[700, 400]"
+        [scheme]="colorScheme"
+        [results]="histo | async"
+        [legend]="true"
+        [xAxisLabel]="'Jour'"
+        [yAxisLabel]="'Dépenses en €'"
+        [showXAxisLabel]="true"
+        [showYAxisLabel]="true"
+        [xAxis]="true"
+        [yAxis]="true"
+        [autoScale]="true">
+      </ngx-charts-line-chart>
+    </div>
+  </mat-tab>
+</mat-tab-group>

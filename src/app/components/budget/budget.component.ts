@@ -17,6 +17,10 @@ export class BudgetComponent {
 
   public data: BehaviorSubject<{ name: string, value: number }[]> = new BehaviorSubject([]);
 
+  public histo: BehaviorSubject<any[]> = new BehaviorSubject([]);
+
+  public total = 0;
+
   colorScheme = {
     domain: ['#2A7E43', '#265B6A', '#AA7239', '#AA4839']
   };
@@ -41,34 +45,66 @@ export class BudgetComponent {
         return transactions;
       })
       .map(transactions => {
-        return transactions.filter(t => new Date(t.date).getMonth() === new Date().getMonth());
+        return transactions.filter(t => {
+          return new Date(t.date).getMonth() === 10;
+        });
       });
 
-  constructor(private transactionService: TransactionService, private userService: UserService) {
-    this.transactions$.map(transactions => {
-      const budget: { name: string, value: number }[] = [];
-      transactions.forEach(transaction => {
-        transaction.labels.forEach(label => {
-          const budgetRow = budget.find(row => row.name === label.name);
-          if (budgetRow !== undefined) {
-            budgetRow.value += transaction.amount;
-          } else {
-            budget.push({name: label.name, value: transaction.amount});
-          }
-        });
-        if (transaction.labels === undefined || transaction.labels.length === 0) {
-          const budgetRow = budget.find(row => row.name === 'Autre');
-          if (budgetRow !== undefined) {
-            budgetRow.value += transaction.amount;
-          } else {
-            budget.push({name: 'Autre', value: transaction.amount});
-          }
+  public transactionsPerLabel$: Observable<any> = this.transactions$.map(transactions => {
+    const budget: { name: string, transactions: Transaction[] }[] = [];
+    transactions.forEach(transaction => {
+      if (transaction.labels === undefined || transaction.labels.length === 0) {
+        transaction.labels = [new TransactionLabel('Autre', [])];
+      }
+      transaction.labels.forEach(label => {
+        const budgetRow = budget.find(row => row.name === label.name);
+        if (budgetRow !== undefined) {
+          budgetRow.transactions.push(transaction);
+        } else {
+          budget.push({name: label.name, transactions: [transaction]});
         }
       });
-      return budget;
+    });
+    return budget;
+  });
+
+  constructor(private transactionService: TransactionService, private userService: UserService) {
+    this.transactionsPerLabel$.map(labels => {
+      return labels.map(label => {
+        const total = label.transactions.reduce(function (a, b) {
+          return a + b.amount;
+        }, 0);
+        this.total += total;
+        return {name: label.name, value: total};
+      });
     }).subscribe(budget => {
       this.data.next(budget);
     });
+
+    this.transactionsPerLabel$.map(labels => {
+      return labels.map(label => {
+        const series = [];
+        label.transactions.forEach(transaction => {
+          const seriesRow = series.find(s => s.name === new Date(transaction.date).getDay());
+          if (seriesRow !== undefined) {
+            seriesRow.value += transaction.amount;
+          } else {
+            series.push({name: new Date(transaction.date).getDay(), value: transaction.amount});
+          }
+        });
+        return {name: label.name, series: series};
+      });
+    }).subscribe(histo => this.histo.next(histo));
+  }
+
+  private addHistoseries(histoRow: any, transaction: Transaction): any {
+    const dataSeries = histoRow.series.find(s => s.name === new Date(transaction.date).getDay());
+    if (dataSeries !== undefined) {
+      dataSeries.value += transaction.amount;
+    } else {
+      dataSeries.push({name: new Date(transaction.date).getDay(), value: transaction.amount});
+    }
+
   }
 
   private getLabels(transaction: Transaction): Observable<TransactionLabel[]> {

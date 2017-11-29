@@ -12,6 +12,7 @@ export class UserService {
     customLabels: [
       new TransactionLabel('PC', [], true),
       new TransactionLabel('Fast Food', ['McDo', 'KFC', 'Burger King'], true),
+      new TransactionLabel('Loyer', ['Gaalon Guerlesquin']),
     ]
   };
 

@@ -11,10 +11,15 @@ import { AngularFirestoreModule } from 'angularfire2/firestore';
 import {
   MatButtonModule,
   MatCardModule,
-  MatChipsModule, MatDatepickerModule, MatInputModule,
-  MatListModule, MatNativeDateModule,
+  MatChipsModule,
+  MatDatepickerModule,
+  MatInputModule,
+  MatListModule,
+  MatNativeDateModule,
   MatProgressSpinnerModule,
-  MatSelectModule, MatSnackBarModule,
+  MatSelectModule,
+  MatSnackBarModule,
+  MatTabsModule,
   MatToolbarModule
 } from '@angular/material';
 import { AngularFireModule } from 'angularfire2';
@@ -73,6 +78,7 @@ const routes: Routes = [
     MatDatepickerModule,
     MatNativeDateModule,
     MatSnackBarModule,
+    MatTabsModule,
 
     NgxChartsModule,
   ],
